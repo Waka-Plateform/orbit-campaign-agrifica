@@ -1,0 +1,61 @@
+{
+  "version": 1,
+  "campaign_id": "ab5b944c-e9cb-4bf7-bd69-fbdca33a1aa1",
+  "slug": "agrifica",
+  "endpoints": [
+    {"section":"console","method":"GET","path":"/console"},
+    {"section":"console","method":"GET","path":"/console/{section}"},
+    {"section":"main","method":"GET","path":"/api/console/main"},
+    {"section":"main_files","method":"GET","path":"/api/console/main/files"},
+    {"section":"main_files_content","method":"GET","path":"/api/console/main/files/content?path={path}"},
+    {"section":"base","method":"GET","path":"/api/console/base/{table}","tables":["contacts","step_output","events","inbox","audit_log","bounces","optout","conversions"]},
+    {"section":"base_schema","method":"GET","path":"/api/console/base/{table}/schema"},
+    {"section":"plan","method":"GET","path":"/api/console/plan"},
+    {"section":"plan","method":"POST","path":"/api/console/plan"},
+    {"section":"plan_lifecycle","method":"POST","path":"/api/console/plan/{start|pause|resume|stop|tick}"},
+    {"section":"sources","method":"GET","path":"/api/console/sources"},
+    {"section":"sources_detail","method":"GET","path":"/api/console/sources/{id}"},
+    {"section":"sources_detail","method":"PATCH","path":"/api/console/sources/{id}"},
+    {"section":"sources_history","method":"GET","path":"/api/console/sources/{id}/history"},
+    {"section":"sources_test","method":"POST","path":"/api/console/sources/{id}/test"},
+    {"section":"channels","method":"GET","path":"/api/console/channels"},
+    {"section":"dashboard","method":"GET","path":"/api/console/dashboard"},
+    {"section":"inbox","method":"GET","path":"/api/console/inbox/{channel}"},
+    {"section":"inbox_reply","method":"POST","path":"/api/console/inbox/{msg_id}/reply"},
+    {"section":"flow_svg","method":"GET","path":"/api/console/flow.svg?mode={design|runtime}"},
+    {"section":"health","method":"GET","path":"/health"},
+    {"section":"tracking_open","method":"GET","path":"/track/open/{step_id}"},
+    {"section":"tracking_click","method":"GET","path":"/track/click/{step_id}?url={url}"},
+    {"section":"unsubscribe","method":"GET","path":"/unsubscribe/{contact_id}"},
+    {"section":"webhooks","method":"POST","path":"/webhooks/email/delivery"},
+    {"section":"webhooks","method":"POST","path":"/webhooks/sms/event"},
+    {"section":"webhooks","method":"POST","path":"/webhooks/whatsapp/event"},
+    {"section":"webhooks","method":"POST","path":"/webhooks/voice/event"},
+    {"section":"webhooks","method":"POST","path":"/webhooks/agent/{agent_id}"},
+    {"section":"events","method":"GET","path":"/events"}
+  ],
+  "sse_streams": [
+    {"event":"inbox.email.new","path":"/events"},
+    {"event":"inbox.sms.new","path":"/events"},
+    {"event":"inbox.whatsapp.new","path":"/events"},
+    {"event":"inbox.voice.new","path":"/events"}
+  ],
+  "static_assets_expected": [
+    "templates/console/_shell.html","templates/console/main.html","templates/console/base.html","templates/console/plan.html","templates/console/sources.html","templates/console/channels.html","templates/console/dashboard.html","templates/console/inbox.html",
+    "static/console/skeleton.css","static/console/components.css","static/console/theme.css","static/console/skeleton.js","static/console/sections/main.js","static/console/sections/base.js","static/console/sections/plan.js","static/console/sections/sources.js","static/console/sections/channels.js","static/console/sections/dashboard.js","static/console/sections/inbox.js"
+  ],
+  "ui_provided_variables": {
+    "email": [{"id":"email_subscription_id","type":"string","label":"Souscription Azure"},{"id":"email_resource_group_name","type":"string"},{"id":"email_communication_service_id","type":"string"},{"id":"email_domain","type":"string"},{"id":"email_sender_username","type":"string"},{"id":"email_display_name","type":"string","optional":true},{"id":"email_reply_to","type":"string","optional":true}],
+    "sms": [{"id":"sms_phone_number","type":"string"},{"id":"sms_connection_string_secret_name","type":"string"}],
+    "whatsapp": [{"id":"whatsapp_sender_id","type":"string"},{"id":"whatsapp_api_base_url","type":"string"},{"id":"whatsapp_token_secret_name","type":"string"}],
+    "voice": [{"id":"compeak_base_url","type":"string"},{"id":"compeak_token_secret_name","type":"string"},{"id":"voice_caller_id","type":"string"}],
+    "agents_waka": [{"id":"text_agent_id","type":"string","optional":true},{"id":"voice_agent_id","type":"string"},{"id":"avatar_agent_id","type":"string"}]
+  },
+  "success_metrics": [
+    {"id":"interactions_started","label":"Interacciones iniciadas","format":"absolute","target":10000,"window":{"value":30,"unit":"day"},"viz":"progress"},
+    {"id":"qualification_completed","label":"Cualificaciones completadas","format":"percentage","target":0.5,"window":{"value":30,"unit":"day"},"viz":"funnel"},
+    {"id":"virtual_agent_acceptance","label":"Aceptan crear agente virtual","format":"percentage","target":0.25,"window":{"value":30,"unit":"day"},"viz":"funnel"},
+    {"id":"conversion_by_country","label":"Conversión por país","format":"absolute","viz":"bar"}
+  ],
+  "active_channels": ["email","voice","web_text","web_voice","web_avatar","sms","whatsapp"]
+}

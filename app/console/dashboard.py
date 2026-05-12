@@ -1,0 +1,9 @@
+from fastapi import APIRouter, Depends
+from app.deps import get_store
+router = APIRouter(prefix="/api/console", tags=["console"])
+@router.get("/dashboard")
+def dashboard(store=Depends(get_store), window: str | None = None, group_by: str = "day"):
+    total = store.count("contacts")
+    sent = store.count("step_output")
+    conversions = store.count("conversions")
+    return {"operational": {"file_closure_rate": {"value": sent/total if total else 0, "target":1.0, "trend_7d":[], "format":"percentage"}, "campaign_duration": {"elapsed_seconds":0,"planned_seconds":2592000,"format":"duration"}, "volume_processed":{"value":sent,"format":"absolute","trend_7d":[]}, "volume_open":{"value":max(total-sent,0),"format":"absolute"}, "error_rate":{"value":0,"trend_7d":[],"format":"percentage"}, "cost_to_date":{"value":0,"format":"currency"}}, "business": [{"id":"interactions_started","label":"Interacciones iniciadas","description":"Contactos que inician una interacción por cualquier canal.","kind":"business","format":"absolute","target":10000,"window":{"value":30,"unit":"day"},"viz":"progress","value":sent,"trend_7d":[]},{"id":"qualification_completed","label":"Cualificaciones completadas","description":"Cualificación inicial completada.","kind":"business","format":"percentage","target":0.5,"window":{"value":30,"unit":"day"},"viz":"funnel","value":0,"trend_7d":[]},{"id":"virtual_agent_acceptance","label":"Aceptan crear agente virtual","description":"Aceptan avanzar hacia creación del agente.","kind":"business","format":"percentage","target":0.25,"window":{"value":30,"unit":"day"},"viz":"funnel","value":0,"trend_7d":[]}], "timeseries": {"activity_by_day": {"labels": [], "series": []}, "funnel": [{"stage":"sent","value":sent},{"stage":"delivered","value":sent},{"stage":"opened","value":0},{"stage":"clicked","value":0},{"stage":"converted","value":conversions}]}, "breakdowns": {"by_audience": [], "by_step": []}}
